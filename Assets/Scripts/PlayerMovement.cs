@@ -23,6 +23,8 @@ public class Playermovement : MonoBehaviour
     public float crouchChange;
     private float currentYScale;
     private float goalYScale;
+    private bool callCrouchDown;
+    public float crouchSpeedChange;
 
     [Header("Slide")]
     public float slideFriction;
@@ -88,14 +90,19 @@ public class Playermovement : MonoBehaviour
         }
 
         //start crouch
-        if (Input.GetKeyDown(crouchKey)){
+        if (isGrounded && (Input.GetKeyDown(crouchKey)|| callCrouchDown)){
+            callCrouchDown = false;
+            Debug.Log("Crouch");
             goalYScale = crouchYScale;
             currentYScale = startYScale;
             CrouchHandlerDown();
+        }else if (Input.GetKeyDown(crouchKey) && !isGrounded){
+            callCrouchDown = true;
         }
 
         //stop crouch
-        if (Input.GetKeyUp(crouchKey)){
+        if (Input.GetKeyUp(crouchKey) && isGrounded){
+            Debug.Log("Stand");
             isSliding = false;
             SlideCheck = false;
             goalYScale = startYScale;
@@ -182,7 +189,7 @@ public class Playermovement : MonoBehaviour
         if (currentYScale < goalYScale)
             currentYScale = goalYScale;
         else
-            Invoke(nameof(CrouchHandlerDown), 0.01f);
+            Invoke(nameof(CrouchHandlerDown), crouchSpeedChange);
 
         transform.localScale = new Vector3(transform.localScale.x, currentYScale, transform.localScale.z);
         //transform.Translate(Vector3.down * ((currentYScale - goalYScale) / 2));
@@ -194,7 +201,7 @@ public class Playermovement : MonoBehaviour
         if (currentYScale > goalYScale)
             currentYScale = goalYScale;
         else
-            Invoke(nameof(CrouchHandlerUp), 0.01f);
+            Invoke(nameof(CrouchHandlerUp), crouchSpeedChange);
 
         transform.localScale = new Vector3(transform.localScale.x, currentYScale, transform.localScale.z);
         currentYScale += crouchChange;
