@@ -9,7 +9,9 @@ public class Playermovement : MonoBehaviour
     public float sprintSpeed;
     public float crouchSpeed;
     private float Speed;
-    public float groundDrag;
+    private float groundDrag;
+    public float groundDragStart;
+    public float groundDragSlide;
 
     [Header("Jump")]
     public float jumpForce;
@@ -64,6 +66,7 @@ public class Playermovement : MonoBehaviour
         startYScale = transform.localScale.y;
         isSliding = false;
         SlideCheck = false;
+        groundDrag = groundDragStart;
     }
     
     void Update(){
@@ -73,6 +76,12 @@ public class Playermovement : MonoBehaviour
         MyInput();
         if(!SlideCheck) LimitSpeed();
 
+        if(isSliding){
+            groundDrag = groundDragSlide;
+        }else{
+            groundDrag = groundDragStart;
+        }
+        
         if(isGrounded){
             rb.drag = groundDrag;
         }else{
@@ -97,7 +106,6 @@ public class Playermovement : MonoBehaviour
         //start crouch
         if (isGrounded && (Input.GetKeyDown(crouchKey)|| callCrouchDown)){
             callCrouchDown = false;
-            Debug.Log("Crouch");
             goalYScale = crouchYScale;
             currentYScale = startYScale;
             CrouchHandlerDown();
@@ -107,7 +115,6 @@ public class Playermovement : MonoBehaviour
 
         //stop crouch
         if (Input.GetKeyUp(crouchKey) && isGrounded){
-            Debug.Log("Stand");
             isSliding = false;
             SlideCheck = false;
             goalYScale = startYScale;
@@ -129,7 +136,7 @@ public class Playermovement : MonoBehaviour
 
         //ground and air handling
         if(isGrounded){
-            rb.AddForce(moveDirection.normalized * Speed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }else if(!isGrounded){
             rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }
