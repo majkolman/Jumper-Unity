@@ -44,6 +44,11 @@ public class Playermovement : MonoBehaviour
     public LayerMask groundMask;
     private bool isGrounded;
 
+    [Header("Slope Handling")]
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
+
+
 
     public Transform orientation;
  
@@ -115,6 +120,14 @@ public class Playermovement : MonoBehaviour
     void MovePlayer(){
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
+
+        //slope handling
+        if (OnSlope())
+        {
+            rb.AddForce(GetSlopeMoveDirection() * Speed * 10f, ForceMode.Force);
+        }
+
+        //ground and air handling
         if(isGrounded){
             rb.AddForce(moveDirection.normalized * Speed * 10f, ForceMode.Force);
         }else if(!isGrounded){
@@ -210,5 +223,19 @@ public class Playermovement : MonoBehaviour
     void StopSlideAccelerate()
     {
         SlideCheck = false;
+    }
+
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection(){
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
     }
 }

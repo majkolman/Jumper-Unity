@@ -381,7 +381,7 @@ Transform:
   m_GameObject: {fileID: 1125015561}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 6.64, y: 13.73, z: 6.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -438,6 +438,7 @@ MonoBehaviour:
   airAcceleration: 0.4
   crouchYScale: 0.5
   crouchChange: 0.005
+  crouchSpeedChange: 0
   slideFriction: 0.1
   slideThreshold: 10
   slideEndSpeed: 3
@@ -449,6 +450,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  maxSlopeAngle: 40
   orientation: {fileID: 905462793}
 --- !u!1 &1401798175
 GameObject:
@@ -461,6 +463,7 @@ GameObject:
   - component: {fileID: 1401798178}
   - component: {fileID: 1401798177}
   - component: {fileID: 1401798176}
+  - component: {fileID: 1401798179}
   m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
@@ -537,12 +540,28 @@ Transform:
   m_GameObject: {fileID: 1401798175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -128.86, y: 0, z: -116.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1401798179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1401798175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d825a2090e7ba7478c508568c01e479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  depth: 20
+  width: 1024
+  height: 1024
+  scale: 20
 --- !u!1 &1440628662
 GameObject:
   m_ObjectHideFlags: 0
