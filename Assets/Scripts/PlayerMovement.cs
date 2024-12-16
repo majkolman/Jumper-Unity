@@ -9,7 +9,9 @@ public class Playermovement : MonoBehaviour
     public float sprintSpeed;
     public float crouchSpeed;
     private float Speed;
-    public float groundDrag;
+    private float groundDrag;
+    public float groundDragStart;
+    public float groundDragSlide;
 
     [Header("Jump")]
     public float jumpForce;
@@ -23,6 +25,8 @@ public class Playermovement : MonoBehaviour
     public float crouchChange;
     private float currentYScale;
     private float goalYScale;
+    private bool callCrouchDown;
+    public float crouchSpeedChange;
 
     [Header("Slide")]
     public float slideFriction;
@@ -42,6 +46,11 @@ public class Playermovement : MonoBehaviour
     public LayerMask groundMask;
     private bool isGrounded;
 
+    [Header("Slope Handling")]
+    public float maxSlopeAngle;
+    private RaycastHit slopeHit;
+
+
 
     public Transform orientation;
  
@@ -57,6 +66,7 @@ public class Playermovement : MonoBehaviour
         startYScale = transform.localScale.y;
         isSliding = false;
         SlideCheck = false;
+        groundDrag = groundDragStart;
     }
     
     void Update(){
@@ -66,6 +76,12 @@ public class Playermovement : MonoBehaviour
         MyInput();
         if(!SlideCheck) LimitSpeed();
 
+        if(isSliding){
+            groundDrag = groundDragSlide;
+        }else{
+            groundDrag = groundDragStart;
+        }
+        
         if(isGrounded){
             rb.drag = groundDrag;
         }else{
@@ -88,14 +104,17 @@ public class Playermovement : MonoBehaviour
         }
 
         //start crouch
-        if (Input.GetKeyDown(crouchKey)){
+        if (isGrounded && (Input.GetKeyDown(crouchKey)|| callCrouchDown)){
+            callCrouchDown = false;
             goalYScale = crouchYScale;
             currentYScale = startYScale;
             CrouchHandlerDown();
+        }else if (Input.GetKeyDown(crouchKey) && !isGrounded){
+            callCrouchDown = true;
         }
 
         //stop crouch
-        if (Input.GetKeyUp(crouchKey)){
+        if (Input.GetKeyUp(crouchKey) && isGrounded){
             isSliding = false;
             SlideCheck = false;
             goalYScale = startYScale;
@@ -108,8 +127,16 @@ public class Playermovement : MonoBehaviour
     void MovePlayer(){
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
+
+        //slope handling
+        if (OnSlope())
+        {
+            rb.AddForce(GetSlopeMoveDirection() * Speed * 10f, ForceMode.Force);
+        }
+
+        //ground and air handling
         if(isGrounded){
-            rb.AddForce(moveDirection.normalized * Speed * 10f, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }else if(!isGrounded){
             rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }
@@ -182,7 +209,7 @@ public class Playermovement : MonoBehaviour
         if (currentYScale < goalYScale)
             currentYScale = goalYScale;
         else
-            Invoke(nameof(CrouchHandlerDown), 0.01f);
+            Invoke(nameof(CrouchHandlerDown), crouchSpeedChange);
 
         transform.localScale = new Vector3(transform.localScale.x, currentYScale, transform.localScale.z);
         //transform.Translate(Vector3.down * ((currentYScale - goalYScale) / 2));
@@ -194,7 +221,7 @@ public class Playermovement : MonoBehaviour
         if (currentYScale > goalYScale)
             currentYScale = goalYScale;
         else
-            Invoke(nameof(CrouchHandlerUp), 0.01f);
+            Invoke(nameof(CrouchHandlerUp), crouchSpeedChange);
 
         transform.localScale = new Vector3(transform.localScale.x, currentYScale, transform.localScale.z);
         currentYScale += crouchChange;
@@ -203,5 +230,19 @@ public class Playermovement : MonoBehaviour
     void StopSlideAccelerate()
     {
         SlideCheck = false;
+    }
+
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.3f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+        return false;
+    }
+
+    private Vector3 GetSlopeMoveDirection(){
+        return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
     }
 }
