@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Playermovement : MonoBehaviour
 {
@@ -50,6 +51,13 @@ public class Playermovement : MonoBehaviour
     public float maxSlopeAngle;
     private RaycastHit slopeHit;
 
+    [Header("Wall Running")]
+    private float wallRunStartSpeed;
+    public bool isWallRunning;
+    private bool isWallRunningPrevious;
+    public float maxWallRunSpeed;
+    public float minWallRunSpeed;
+
 
 
     public Transform orientation;
@@ -65,12 +73,16 @@ public class Playermovement : MonoBehaviour
         rb.freezeRotation = true;
         startYScale = transform.localScale.y;
         isSliding = false;
+        isWallRunning = false;
         SlideCheck = false;
         groundDrag = groundDragStart;
+        rb.AddForce(Vector3.right * 0.001f, ForceMode.Impulse);
     }
     
     void Update(){
+        //check for wall and limit speed
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundMask);
+        
 
         StateHandler();
         MyInput();
@@ -87,6 +99,8 @@ public class Playermovement : MonoBehaviour
         }else{
             rb.drag = 0;
         }
+
+        isWallRunningPrevious = isWallRunning;
     }
 
     void FixedUpdate(){
@@ -98,6 +112,11 @@ public class Playermovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         if(Input.GetKey(jumpKey) && readyToJump && isGrounded){
+            Invoke(nameof(DisableSlide), 0.1f);
+            Invoke(nameof(StopSlideAccelerate), 0.1f);
+            goalYScale = startYScale;
+            currentYScale = crouchYScale;
+            CrouchHandlerUp();
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -144,17 +163,25 @@ public class Playermovement : MonoBehaviour
 
     void LimitSpeed(){
         Vector3 horizontalVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        if (!isSliding && horizontalVel.magnitude > Speed)
-        {
-            Vector3 limitedVel = horizontalVel.normalized * Speed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        if(isWallRunning){
+            if(!isWallRunningPrevious && isWallRunning)wallRunStartSpeed = Math.Min(Math.Max(horizontalVel.magnitude, minWallRunSpeed), maxWallRunSpeed);
+            if(horizontalVel.magnitude > wallRunStartSpeed)
+            {
+                Vector3 limitedVel = horizontalVel.normalized * wallRunStartSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+            }
         }
-        else if(isSliding)
+        else if(isSliding || !isGrounded)
         {
                 float reductionFactor = (horizontalVel.magnitude - slideFriction) / horizontalVel.magnitude;
                 Vector3 limitedVel = horizontalVel * reductionFactor;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
                 if (limitedVel.magnitude < slideEndSpeed) isSliding = false;
+        }
+        else if(!isSliding && horizontalVel.magnitude > Speed)
+        {
+            Vector3 limitedVel = horizontalVel.normalized * Speed;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
         
     }
@@ -244,5 +271,10 @@ public class Playermovement : MonoBehaviour
 
     private Vector3 GetSlopeMoveDirection(){
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    private void DisableSlide()
+    {
+        isSliding = false;
     }
 }

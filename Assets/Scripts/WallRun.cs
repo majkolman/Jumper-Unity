@@ -40,6 +40,7 @@ public class WallRun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerMovement.isWallRunning = isWallRunning;
         CheckForWall();
         StateCheck();
     }

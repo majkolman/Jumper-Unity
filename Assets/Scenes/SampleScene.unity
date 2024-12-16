@@ -453,6 +453,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxSlopeAngle: 40
+  isWallRunning: 0
+  maxWallRunSpeed: 9999999
+  minWallRunSpeed: 10
   orientation: {fileID: 905462793}
 --- !u!114 &1125015568
 MonoBehaviour:
