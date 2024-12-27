@@ -6,36 +6,36 @@ using System;
 public class Playermovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    public float sprintSpeed;
-    public float crouchSpeed;
+    public float moveSpeed = 10f;
+    public float sprintSpeed = 15f;
+    public float crouchSpeed = 5f;
     private float Speed;
     private float groundDrag;
-    public float groundDragStart;
-    public float groundDragSlide;
+    public float groundDragStart = 1f;
+    public float groundDragSlide = 0.5f;
 
     [Header("Jump")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airAcceleration;
+    public float jumpForce = 12f;
+    public float jumpCooldown = 0.25f;
+    public float airAcceleration = 0.3f;
     bool readyToJump = true;
 
     [Header("Crouch")]
-    public float crouchYScale;
+    public float crouchYScale = 0.5f;
     private float startYScale;
-    public float crouchChange;
+    public float crouchChange = 0.005f;
     private float currentYScale;
     private float goalYScale;
     private bool callCrouchDown;
-    public float crouchSpeedChange;
+    public float crouchSpeedChange = 0.001f;
 
     [Header("Slide")]
-    public float slideFriction;
-    public float slideThreshold;
-    public float slideEndSpeed;
+    public float slideFriction = 0.1f;
+    public float slideThreshold = 10f;
+    public float slideEndSpeed = 3f;
     private bool isSliding;
     private bool SlideCheck;
-    public float slideTimer;
+    public float slideTimer = 0.5f;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -43,22 +43,20 @@ public class Playermovement : MonoBehaviour
     public KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Ground Check")]
-    public float playerHeight;
+    public float playerHeight = 2f;
     public LayerMask groundMask;
     private bool isGrounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    public float maxSlopeAngle = 40f;
     private RaycastHit slopeHit;
 
     [Header("Wall Running")]
     private float wallRunStartSpeed;
     public bool isWallRunning;
     private bool isWallRunningPrevious;
-    public float maxWallRunSpeed;
-    public float minWallRunSpeed;
-
-
+    public float maxWallRunSpeed = 9999999f;
+    public float minWallRunSpeed = 10f;
 
     public Transform orientation;
  

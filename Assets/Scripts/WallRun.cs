@@ -9,10 +9,10 @@ public class WallRun : MonoBehaviour
     [Header("Wall Running")]
     public LayerMask wallRunLayer;
     public LayerMask groundLayer;
-    public float wallRunForce;
-    public float wallJumpUpForce;
-    public float wallJumpSideForce;
-    public float maxWallRunTime;
+    public float wallRunForce = 200f;
+    public float wallJumpUpForce = 5f;
+    public float wallJumpSideForce = 5f;
+    public float maxWallRunTime = 5f;
     private float wallRunTime;
 
     [Header("Input")]
@@ -21,8 +21,8 @@ public class WallRun : MonoBehaviour
     private KeyCode wallJumpKey = KeyCode.Space;
 
     [Header("Wall Running Detection")]
-    public float wallCheckDistance;
-    public float wallCheckHeight;
+    public float wallCheckDistance = 0.7f;
+    public float wallCheckHeight = 2f;
     private RaycastHit leftWallHit;
     private bool isWallLeft;
     private RaycastHit rightWallHit;
