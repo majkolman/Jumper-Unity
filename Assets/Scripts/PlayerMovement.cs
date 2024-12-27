@@ -8,16 +8,16 @@ public class Playermovement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 10f;
     public float sprintSpeed = 15f;
-    public float crouchSpeed = 5f;
+    public float crouchSpeed = 3f;
     private float Speed;
     private float groundDrag;
-    public float groundDragStart = 1f;
-    public float groundDragSlide = 0.5f;
+    public float groundDragStart = 2f;
+    public float groundDragSlide = 0f;
 
     [Header("Jump")]
     public float jumpForce = 12f;
     public float jumpCooldown = 0.25f;
-    public float airAcceleration = 0.3f;
+    public float airAcceleration = 0.4f;
     bool readyToJump = true;
 
     [Header("Crouch")]
@@ -30,9 +30,9 @@ public class Playermovement : MonoBehaviour
     public float crouchSpeedChange = 0.001f;
 
     [Header("Slide")]
-    public float slideFriction = 0.1f;
+    public float slideFriction = 0.15f;
     public float slideThreshold = 10f;
-    public float slideEndSpeed = 3f;
+    public float slideEndSpeed = 1f;
     private bool isSliding;
     private bool SlideCheck;
     public float slideTimer = 0.5f;
@@ -44,11 +44,11 @@ public class Playermovement : MonoBehaviour
 
     [Header("Ground Check")]
     public float playerHeight = 2f;
-    public LayerMask groundMask;
+    private LayerMask groundMask;
     private bool isGrounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle = 40f;
+    public float maxSlopeAngle = 70f;
     private RaycastHit slopeHit;
 
     [Header("Wall Running")]
@@ -66,6 +66,10 @@ public class Playermovement : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    void Awake(){
+        groundMask = LayerMask.GetMask("groundMask");
+        orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+    }
     void Start(){
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -75,6 +79,7 @@ public class Playermovement : MonoBehaviour
         SlideCheck = false;
         groundDrag = groundDragStart;
         rb.AddForce(Vector3.right * 0.001f, ForceMode.Impulse);
+        
     }
     
     void Update(){
@@ -153,7 +158,7 @@ public class Playermovement : MonoBehaviour
 
         //ground and air handling
         if(isGrounded){
-            rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * Speed * 10f, ForceMode.Force);
         }else if(!isGrounded){
             rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }
@@ -162,12 +167,10 @@ public class Playermovement : MonoBehaviour
     void LimitSpeed(){
         Vector3 horizontalVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         if(isWallRunning){
-            if(!isWallRunningPrevious && isWallRunning)wallRunStartSpeed = Math.Min(Math.Max(horizontalVel.magnitude, minWallRunSpeed), maxWallRunSpeed);
-            if(horizontalVel.magnitude > wallRunStartSpeed)
-            {
+            if(!isWallRunningPrevious) wallRunStartSpeed = Math.Min(Math.Max(horizontalVel.magnitude, minWallRunSpeed), maxWallRunSpeed);
+
                 Vector3 limitedVel = horizontalVel.normalized * wallRunStartSpeed;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
-            }
         }
         else if(isSliding || !isGrounded)
         {

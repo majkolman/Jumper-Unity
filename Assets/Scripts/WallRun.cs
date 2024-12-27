@@ -154,4 +154,6 @@ public class WallRun : MonoBehaviour
         exitingWall = true;
         exitWallTimer = exitWallTime;
     }
+    
+
 }
