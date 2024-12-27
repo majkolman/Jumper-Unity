@@ -10,8 +10,8 @@ public class WallRun : MonoBehaviour
     public LayerMask wallRunLayer;
     public LayerMask groundLayer;
     public float wallRunForce = 200f;
-    public float wallJumpUpForce = 5f;
-    public float wallJumpSideForce = 5f;
+    public float wallJumpUpForce = 12f;
+    public float wallJumpSideForce = 12f;
     public float maxWallRunTime = 5f;
     private float wallRunTime;
 
@@ -44,7 +44,9 @@ public class WallRun : MonoBehaviour
     {
         playerMovement = GetComponent<Playermovement>();
         rb = GetComponent<Rigidbody>();
-
+        orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+        groundLayer = LayerMask.GetMask("groundMask");
+        wallRunLayer = LayerMask.GetMask("groundMask");
     }
 
     // Update is called once per frame
