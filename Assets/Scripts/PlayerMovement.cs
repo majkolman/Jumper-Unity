@@ -1,40 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Playermovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed;
-    public float sprintSpeed;
-    public float crouchSpeed;
+    public float moveSpeed = 10f;
+    public float sprintSpeed = 15f;
+    public float crouchSpeed = 3f;
     private float Speed;
     private float groundDrag;
-    public float groundDragStart;
-    public float groundDragSlide;
+    public float groundDragStart = 2f;
+    public float groundDragSlide = 0f;
 
     [Header("Jump")]
-    public float jumpForce;
-    public float jumpCooldown;
-    public float airAcceleration;
+    public float jumpForce = 12f;
+    public float jumpCooldown = 0.25f;
+    public float airAcceleration = 0.4f;
     bool readyToJump = true;
 
     [Header("Crouch")]
-    public float crouchYScale;
+    public float crouchYScale = 0.5f;
     private float startYScale;
-    public float crouchChange;
+    public float crouchChange = 0.005f;
     private float currentYScale;
     private float goalYScale;
     private bool callCrouchDown;
-    public float crouchSpeedChange;
+    public float crouchSpeedChange = 0.001f;
 
     [Header("Slide")]
-    public float slideFriction;
-    public float slideThreshold;
-    public float slideEndSpeed;
+    public float slideFriction = 0.15f;
+    public float slideThreshold = 10f;
+    public float slideEndSpeed = 1f;
     private bool isSliding;
     private bool SlideCheck;
-    public float slideTimer;
+    public float slideTimer = 0.5f;
 
     [Header("Keybinds")]
     public KeyCode jumpKey = KeyCode.Space;
@@ -42,15 +43,20 @@ public class Playermovement : MonoBehaviour
     public KeyCode sprintKey = KeyCode.LeftShift;
 
     [Header("Ground Check")]
-    public float playerHeight;
-    public LayerMask groundMask;
+    public float playerHeight = 2f;
+    private LayerMask groundMask;
     private bool isGrounded;
 
     [Header("Slope Handling")]
-    public float maxSlopeAngle;
+    public float maxSlopeAngle = 70f;
     private RaycastHit slopeHit;
 
-
+    [Header("Wall Running")]
+    private float wallRunStartSpeed;
+    public bool isWallRunning;
+    private bool isWallRunningPrevious;
+    public float maxWallRunSpeed = 9999999f;
+    public float minWallRunSpeed = 10f;
 
     public Transform orientation;
  
@@ -60,17 +66,26 @@ public class Playermovement : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    void Awake(){
+        groundMask = LayerMask.GetMask("groundMask");
+        orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+    }
     void Start(){
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         startYScale = transform.localScale.y;
         isSliding = false;
+        isWallRunning = false;
         SlideCheck = false;
         groundDrag = groundDragStart;
+        rb.AddForce(Vector3.right * 0.001f, ForceMode.Impulse);
+        
     }
     
     void Update(){
+        //check for wall and limit speed
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundMask);
+        
 
         StateHandler();
         MyInput();
@@ -87,6 +102,8 @@ public class Playermovement : MonoBehaviour
         }else{
             rb.drag = 0;
         }
+
+        isWallRunningPrevious = isWallRunning;
     }
 
     void FixedUpdate(){
@@ -98,6 +115,11 @@ public class Playermovement : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         if(Input.GetKey(jumpKey) && readyToJump && isGrounded){
+            Invoke(nameof(DisableSlide), 0.1f);
+            Invoke(nameof(StopSlideAccelerate), 0.1f);
+            goalYScale = startYScale;
+            currentYScale = crouchYScale;
+            CrouchHandlerUp();
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -136,7 +158,7 @@ public class Playermovement : MonoBehaviour
 
         //ground and air handling
         if(isGrounded){
-            rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
+            rb.AddForce(moveDirection.normalized * Speed * 10f, ForceMode.Force);
         }else if(!isGrounded){
             rb.AddForce(moveDirection.normalized * Speed * 10f * airAcceleration, ForceMode.Force);
         }
@@ -144,17 +166,23 @@ public class Playermovement : MonoBehaviour
 
     void LimitSpeed(){
         Vector3 horizontalVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        if (!isSliding && horizontalVel.magnitude > Speed)
-        {
-            Vector3 limitedVel = horizontalVel.normalized * Speed;
-            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+        if(isWallRunning){
+            if(!isWallRunningPrevious) wallRunStartSpeed = Math.Min(Math.Max(horizontalVel.magnitude, minWallRunSpeed), maxWallRunSpeed);
+
+                Vector3 limitedVel = horizontalVel.normalized * wallRunStartSpeed;
+                rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
-        else if(isSliding)
+        else if(isSliding || !isGrounded)
         {
                 float reductionFactor = (horizontalVel.magnitude - slideFriction) / horizontalVel.magnitude;
                 Vector3 limitedVel = horizontalVel * reductionFactor;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
                 if (limitedVel.magnitude < slideEndSpeed) isSliding = false;
+        }
+        else if(!isSliding && horizontalVel.magnitude > Speed)
+        {
+            Vector3 limitedVel = horizontalVel.normalized * Speed;
+            rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
         
     }
@@ -244,5 +272,10 @@ public class Playermovement : MonoBehaviour
 
     private Vector3 GetSlopeMoveDirection(){
         return Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+    }
+
+    private void DisableSlide()
+    {
+        isSliding = false;
     }
 }
