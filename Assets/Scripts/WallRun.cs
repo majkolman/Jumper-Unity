@@ -12,7 +12,7 @@ public class WallRun : MonoBehaviour
     public float wallRunForce = 200f;
     public float wallJumpUpForce = 12f;
     public float wallJumpSideForce = 12f;
-    public float maxWallRunTime = 5f;
+    public float maxWallRunTime = 1f;
     private float wallRunTime;
 
     [Header("Input")]
@@ -30,8 +30,8 @@ public class WallRun : MonoBehaviour
     private bool isWallRunning;
 
     [Header("Exiting")]
+    public float exitWallTime = 1f;
     private bool exitingWall;
-    private float exitWallTime;
     private float exitWallTimer;
 
     [Header("References")]
@@ -88,10 +88,22 @@ public class WallRun : MonoBehaviour
                 StartWallRun();
             }
 
+            if(wallRunTime > 0)
+            {
+                wallRunTime -= Time.deltaTime;
+            }
+            
+            if(wallRunTime <= 0 && isWallRunning)
+            {
+                exitingWall = true;
+                exitWallTimer = exitWallTime;
+            }
+
             if (Input.GetKeyDown(wallJumpKey)) 
             {
                 WallJump();
             }
+
         }
         else if (exitingWall) 
         {
@@ -103,6 +115,7 @@ public class WallRun : MonoBehaviour
             if (exitWallTimer > 0) 
             {
                 exitWallTimer -= Time.deltaTime;
+                if(isWallLeft || isWallRight) exitWallTimer = exitWallTime;
             }
 
             if (exitWallTimer <= 0) 
@@ -119,12 +132,15 @@ public class WallRun : MonoBehaviour
 
     private void StartWallRun()
     {
+        Debug.Log("StartWallRun");
         isWallRunning = true;
         rb.useGravity = false;
+        wallRunTime = maxWallRunTime;
     }
 
     private void StopWallRun()
     {
+        Debug.Log("StopWallRun");
         isWallRunning = false;
         rb.useGravity = true;
     }

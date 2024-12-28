@@ -32,4 +32,20 @@ public class Mousemovement : MonoBehaviour
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
+
+    void TiltCamera()
+    {
+    }
+
+    void UnTiltCamera()
+    {
+    }
+
+    void FovUp()
+    {
+    }
+
+    void FovDown()
+    {
+    }
 }
