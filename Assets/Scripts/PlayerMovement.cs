@@ -28,6 +28,7 @@ public class Playermovement : MonoBehaviour
     private float goalYScale;
     private bool callCrouchDown;
     public float crouchSpeedChange = 0.001f;
+    private int crouchState = 0;
 
     [Header("Slide")]
     public float slideFriction = 0.15f;
@@ -104,6 +105,8 @@ public class Playermovement : MonoBehaviour
         }
 
         isWallRunningPrevious = isWallRunning;
+
+        if(isSliding && crouchState == 0) isSliding = false;
     }
 
     void FixedUpdate(){
@@ -117,9 +120,11 @@ public class Playermovement : MonoBehaviour
         if(Input.GetKey(jumpKey) && readyToJump && isGrounded){
             Invoke(nameof(DisableSlide), 0.1f);
             Invoke(nameof(StopSlideAccelerate), 0.1f);
-            goalYScale = startYScale;
-            currentYScale = crouchYScale;
-            CrouchHandlerUp();
+            if(crouchState == 1){
+                goalYScale = startYScale;
+                currentYScale = crouchYScale;
+                CrouchHandlerUp();
+            }
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown);
@@ -234,6 +239,7 @@ public class Playermovement : MonoBehaviour
     }
     
     void CrouchHandlerDown(){
+        crouchState = 1;
         if (currentYScale < goalYScale)
             currentYScale = goalYScale;
         else
@@ -246,6 +252,7 @@ public class Playermovement : MonoBehaviour
 
     void CrouchHandlerUp()
     {
+        crouchState = 0;
         if (currentYScale > goalYScale)
             currentYScale = goalYScale;
         else
