@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Mousemovement : MonoBehaviour
 {
     public float sensitivity;
 
     public Transform orientation;
+    public Transform camHolder;
+    public float TransitionSpeed = 0.5f;
+    public float StartFov = 90f;
+    public float WallRunFov = 100f;
+    public float WallRunTilt = 5f;
 
     float xRotation = 0f;
     float yRotation = 0f;
@@ -29,23 +35,17 @@ public class Mousemovement : MonoBehaviour
 
         yRotation += mouseX;
 
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+        camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
     }
 
-    void TiltCamera()
+    public void DoTilt(float endValue)
     {
+        transform.DOLocalRotate(new Vector3(0, 0, endValue), TransitionSpeed);
     }
 
-    void UnTiltCamera()
+    public void DoFov(float endValue)
     {
-    }
-
-    void FovUp()
-    {
-    }
-
-    void FovDown()
-    {
+        GetComponent<Camera>().DOFieldOfView(endValue, TransitionSpeed);
     }
 }

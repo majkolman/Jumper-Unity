@@ -36,6 +36,7 @@ public class WallRun : MonoBehaviour
 
     [Header("References")]
     public Transform orientation;
+    public Mousemovement playerCam;
     private Playermovement playerMovement;
     private Rigidbody rb;
 
@@ -55,6 +56,12 @@ public class WallRun : MonoBehaviour
         playerMovement.isWallRunning = isWallRunning;
         CheckForWall();
         StateCheck();
+
+        if(!isWallRunning && (isWallLeft || isWallRight))
+        {
+            Vector3 wallNormal = isWallRight ? rightWallHit.normal : leftWallHit.normal;
+            rb.AddForce(wallNormal * 10, ForceMode.Force);
+        }
     }
 
     private void FixedUpdate()
@@ -132,17 +139,22 @@ public class WallRun : MonoBehaviour
 
     private void StartWallRun()
     {
-        Debug.Log("StartWallRun");
         isWallRunning = true;
         rb.useGravity = false;
         wallRunTime = maxWallRunTime;
+
+        playerCam.DoFov(playerCam.WallRunFov);
+        if(isWallLeft) playerCam.DoTilt(-playerCam.WallRunTilt);
+        else playerCam.DoTilt(playerCam.WallRunTilt);
     }
 
     private void StopWallRun()
     {
-        Debug.Log("StopWallRun");
         isWallRunning = false;
         rb.useGravity = true;
+
+        playerCam.DoFov(playerCam.StartFov);
+        playerCam.DoTilt(0);
     }
 
     private void WallRunningMovement()
