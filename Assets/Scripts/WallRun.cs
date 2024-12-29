@@ -143,18 +143,15 @@ public class WallRun : MonoBehaviour
         rb.useGravity = false;
         wallRunTime = maxWallRunTime;
 
-        playerCam.DoFov(playerCam.WallRunFov);
-        if(isWallLeft) playerCam.DoTilt(-playerCam.WallRunTilt);
-        else playerCam.DoTilt(playerCam.WallRunTilt);
+        playerCam.DoFov(playerCam.WallRunFov, playerCam.WallRunTransitionSpeed);
+        if(isWallLeft) playerCam.DoTilt(-playerCam.WallRunTilt, playerCam.WallRunTransitionSpeed);
+        else playerCam.DoTilt(playerCam.WallRunTilt, playerCam.WallRunTransitionSpeed);
     }
 
     private void StopWallRun()
     {
         isWallRunning = false;
         rb.useGravity = true;
-
-        playerCam.DoFov(playerCam.StartFov);
-        playerCam.DoTilt(0);
     }
 
     private void WallRunningMovement()

@@ -36,6 +36,7 @@ public class Playermovement : MonoBehaviour
     public float slideThreshold = 10f;
     public float slideEndSpeed = 1f;
     private bool isSliding;
+    private bool isSlidingPrevious;
     private bool SlideCheck;
     public float slideTimer = 0.5f;
 
@@ -48,6 +49,7 @@ public class Playermovement : MonoBehaviour
     public float playerHeight = 2f;
     private LayerMask groundMask;
     private bool isGrounded;
+    private bool isGroundedPrevious;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle = 70f;
@@ -65,6 +67,7 @@ public class Playermovement : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
     public ChangeCam cameraScript;
+    public Mousemovement playerCam;
 
     Vector3 moveDirection;
     Rigidbody rb;
@@ -82,7 +85,7 @@ public class Playermovement : MonoBehaviour
         SlideCheck = false;
         groundDrag = groundDragStart;
         rb.AddForce(Vector3.right * 0.001f, ForceMode.Impulse);
-        
+        isGroundedPrevious = true;
     }
     
     void Update(){
@@ -106,9 +109,26 @@ public class Playermovement : MonoBehaviour
             rb.drag = 0;
         }
 
-        isWallRunningPrevious = isWallRunning;
-
         if(isSliding && (crouchState == 0 || !isGrounded)) isSliding = false;
+
+        //Camera Effects
+        if(isGrounded && !isGroundedPrevious){
+            playerCam.CameraShake();
+        }
+        if(isSliding && !isSlidingPrevious){
+            playerCam.DoFov(playerCam.SlideFov, playerCam.SlideTransitionSpeed);
+        }
+        if(!isSliding && isSlidingPrevious){
+            playerCam.DoFov(playerCam.StartFov, playerCam.SlideTransitionSpeed);
+        }
+        if(!isWallRunning && isWallRunningPrevious){
+            playerCam.DoFov(playerCam.StartFov, playerCam.WallRunTransitionSpeed);
+            playerCam.DoTilt(0, playerCam.WallRunTransitionSpeed);
+        }
+
+        isWallRunningPrevious = isWallRunning;
+        isGroundedPrevious = isGrounded;
+        isSlidingPrevious = isSliding;
     }
 
     void FixedUpdate(){

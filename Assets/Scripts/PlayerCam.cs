@@ -9,10 +9,14 @@ public class Mousemovement : MonoBehaviour
 
     public Transform orientation;
     public Transform camHolder;
-    public float TransitionSpeed = 0.5f;
+    public float WallRunTransitionSpeed = 0.5f;
     public float StartFov = 90f;
-    public float WallRunFov = 100f;
+    public float WallRunFov = 110f;
     public float WallRunTilt = 5f;
+    public float CameraShakeAmount = 2f;
+    public float CameraShakeDuration = 0.1f;
+    public float SlideFov = 110f;
+    public float SlideTransitionSpeed = 1f;
     public ChangeCam cameraScript;
 
     float xRotation = 0f;
@@ -43,13 +47,18 @@ public class Mousemovement : MonoBehaviour
         }
     }
 
-    public void DoTilt(float endValue)
+    public void DoTilt(float endValue, float duration)
     {
-        transform.DOLocalRotate(new Vector3(0, 0, endValue), TransitionSpeed);
+        transform.DOLocalRotate(new Vector3(0, 0, endValue), duration);
     }
 
-    public void DoFov(float endValue)
+    public void DoFov(float endValue, float duration)
     {
-        GetComponent<Camera>().DOFieldOfView(endValue, TransitionSpeed);
+        GetComponent<Camera>().DOFieldOfView(endValue, duration);
+    }
+
+    public void CameraShake()
+    {
+        transform.DOLocalRotate(new Vector3(CameraShakeAmount, 0, 0), CameraShakeDuration).OnComplete(() => transform.DOLocalRotate(new Vector3(0, 0, 0), CameraShakeDuration));
     }
 }
