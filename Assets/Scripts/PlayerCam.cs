@@ -5,7 +5,7 @@ using DG.Tweening;
 
 public class Mousemovement : MonoBehaviour
 {
-    public float sensitivity;
+    public float sensitivity = 2f;
 
     public Transform orientation;
     public Transform camHolder;

@@ -32,7 +32,7 @@ public class Playermovement : MonoBehaviour
     private int crouchState = 0;
 
     [Header("Slide")]
-    public float slideFriction = 0.15f;
+    public float slideFriction = 60f;
     public float slideThreshold = 10f;
     public float slideEndSpeed = 1f;
     private bool isSliding;
@@ -190,7 +190,7 @@ public class Playermovement : MonoBehaviour
         }
         else if(isSliding || !isGrounded)
         {
-                float reductionFactor = (horizontalVel.magnitude - slideFriction) / horizontalVel.magnitude;
+                float reductionFactor = (horizontalVel.magnitude - (slideFriction * Time.deltaTime)) / horizontalVel.magnitude;
                 Vector3 limitedVel = horizontalVel * reductionFactor;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
                 if (limitedVel.magnitude < slideEndSpeed) isSliding = false;
