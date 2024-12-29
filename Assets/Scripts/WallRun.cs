@@ -40,14 +40,17 @@ public class WallRun : MonoBehaviour
     private Playermovement playerMovement;
     private Rigidbody rb;
 
-
-    void Start()
+    void Awake()
     {
-        playerMovement = GetComponent<Playermovement>();
-        rb = GetComponent<Rigidbody>();
         orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
         groundLayer = LayerMask.GetMask("groundMask");
         wallRunLayer = LayerMask.GetMask("groundMask");
+        playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();
+    }
+    void Start()
+    {
+        playerMovement = GetComponent<Playermovement>();
+        rb = GetComponent<Rigidbody>();    
     }
 
     // Update is called once per frame

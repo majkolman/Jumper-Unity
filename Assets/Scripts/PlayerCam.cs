@@ -22,7 +22,13 @@ public class Mousemovement : MonoBehaviour
     float xRotation = 0f;
     float yRotation = 0f;
 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        orientation = GameObject.Find("Orientation").transform;
+        camHolder = GameObject.Find("CameraHolder").transform;
+        cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
+    }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;

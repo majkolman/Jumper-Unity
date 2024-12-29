@@ -75,6 +75,8 @@ public class Playermovement : MonoBehaviour
     void Awake(){
         groundMask = LayerMask.GetMask("groundMask");
         orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+        cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
+        playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();
     }
     void Start(){
         rb = GetComponent<Rigidbody>();

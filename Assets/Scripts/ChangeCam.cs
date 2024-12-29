@@ -9,8 +9,13 @@ public class ChangeCam : MonoBehaviour
 
     //0-->First Person
     //1-->Third Person
-    public int CamMode;
+    public int CamMode = 1;
 
+    void Awake()
+    {
+        thirdCam = GameObject.Find("ThirdCam");
+        thirdCamScript = thirdCam.GetComponent<Cinemachine.CinemachineFreeLook>();
+    }
     // Update is called once per frame
     void Update()
     {
