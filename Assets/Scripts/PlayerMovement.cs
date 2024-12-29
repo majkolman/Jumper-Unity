@@ -108,7 +108,7 @@ public class Playermovement : MonoBehaviour
 
         isWallRunningPrevious = isWallRunning;
 
-        if(isSliding && crouchState == 0) isSliding = false;
+        if(isSliding && (crouchState == 0 || !isGrounded)) isSliding = false;
     }
 
     void FixedUpdate(){
