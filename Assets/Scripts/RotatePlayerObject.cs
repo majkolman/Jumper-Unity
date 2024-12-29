@@ -5,6 +5,7 @@ using UnityEngine;
 public class RotatePlayerObject : MonoBehaviour
 {
     public Transform orientation;
+    public ChangeCam cameraScript;
 
     void Update()
     {

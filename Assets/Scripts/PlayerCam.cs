@@ -13,6 +13,7 @@ public class Mousemovement : MonoBehaviour
     public float StartFov = 90f;
     public float WallRunFov = 100f;
     public float WallRunTilt = 5f;
+    public ChangeCam cameraScript;
 
     float xRotation = 0f;
     float yRotation = 0f;
@@ -27,16 +28,19 @@ public class Mousemovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+        if (cameraScript.CamMode == 0)
+        {
+            float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
 
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+            xRotation -= mouseY;
+            xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        yRotation += mouseX;
+            yRotation += mouseX;
 
-        camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
-        orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
+            orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+        }
     }
 
     public void DoTilt(float endValue)

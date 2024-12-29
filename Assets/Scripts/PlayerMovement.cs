@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class Playermovement : MonoBehaviour
 {
@@ -63,6 +64,7 @@ public class Playermovement : MonoBehaviour
  
     private float horizontalInput;
     private float verticalInput;
+    public ChangeCam cameraScript;
 
     Vector3 moveDirection;
     Rigidbody rb;
@@ -152,8 +154,17 @@ public class Playermovement : MonoBehaviour
     }
 
     void MovePlayer(){
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
+        if(cameraScript.CamMode == 0){
+            moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        }else{
+            Vector3 cameraForward = new Vector3(cameraScript.thirdCam.transform.forward.x, 0f, cameraScript.thirdCam.transform.forward.z).normalized;
+            Vector3 cameraRight = new Vector3(cameraScript.thirdCam.transform.right.x, 0f, cameraScript.thirdCam.transform.right.z).normalized;
+            moveDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
+            if (moveDirection != Vector3.zero) {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                orientation.DORotateQuaternion(targetRotation, 0.5f); // Interpolate rotation over 0.5 seconds}
+            }
+        }
 
         //slope handling
         if (OnSlope())

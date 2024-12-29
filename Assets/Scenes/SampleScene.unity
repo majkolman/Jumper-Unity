@@ -858,6 +858,7 @@ MonoBehaviour:
   StartFov: 90
   WallRunFov: 100
   WallRunTilt: 5
+  cameraScript: {fileID: 964359819}
 --- !u!1 &964359818
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,6 +1087,7 @@ MonoBehaviour:
   maxWallRunSpeed: 9999999
   minWallRunSpeed: 10
   orientation: {fileID: 0}
+  cameraScript: {fileID: 964359819}
 --- !u!114 &1125015568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1990,6 +1992,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   orientation: {fileID: 905462793}
+  cameraScript: {fileID: 964359819}
 --- !u!1 &1906973099
 GameObject:
   m_ObjectHideFlags: 3
