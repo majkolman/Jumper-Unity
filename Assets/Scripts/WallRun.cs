@@ -30,7 +30,7 @@ public class WallRun : MonoBehaviour
     private bool isWallRunning;
 
     [Header("Exiting")]
-    public float exitWallTime = 1f;
+    public float exitWallTime = .1f;
     private bool exitingWall;
     private float exitWallTimer;
 
