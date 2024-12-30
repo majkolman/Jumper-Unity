@@ -14,6 +14,7 @@ public class WallClimb : MonoBehaviour
     public float WallClimbMaxDistance = 1f;
     public float playerHeight = 3f;
     public float playerRadius = 1f;
+    public float WallLerpDuration = 0.5f;
     private bool isWallClimbing = false;
     private bool OrientationHitWall = false;
     private bool CameraHitWall = false;
@@ -66,10 +67,12 @@ public class WallClimb : MonoBehaviour
             rb.AddForce(-orientation.forward * 10, ForceMode.Force);
         }
 
-        if(Physics.Raycast(orientation.position, -orientation.forward, WallClimbMaxDistance)){
+        
+        if(Physics.Raycast(orientation.position, -orientation.forward, out RaycastHit hit, WallClimbMaxDistance)){
             // Push away from wall
-            rb.AddForce(orientation.forward * 10, ForceMode.Force);
+            if(hit.collider.CompareTag("Wall")) rb.AddForce(orientation.forward * 10, ForceMode.Force);
         }
+        
             
     }
 
@@ -83,7 +86,7 @@ public class WallClimb : MonoBehaviour
     {
         if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight))
             {
-                StartCoroutine(LerpClimb(secondHit.point, 0.5f));
+                StartCoroutine(LerpClimb(secondHit.point, WallLerpDuration));
                 isLerping = true;
             }
     }

@@ -19,8 +19,8 @@ public class Mousemovement : MonoBehaviour
     public float SlideFov = 110f;
     public float SlideTransitionSpeed = 1f;
     public float CameraShakeAmountWallLerp = 20f;
-    public float CameraShakeDurationWallLerp = 0.5f;
     public ChangeCam cameraScript;
+    public WallClimb wallClimb;
 
     float xRotation = 0f;
     float yRotation = 0f;
@@ -31,6 +31,7 @@ public class Mousemovement : MonoBehaviour
         camHolder = GameObject.Find("CameraHolder").transform;
         cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
         cameraPos = GameObject.Find("CameraPos").transform;
+        wallClimb = GameObject.Find("Player").GetComponent<WallClimb>();
     }
 
     void Start()
@@ -54,8 +55,8 @@ public class Mousemovement : MonoBehaviour
 
             camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
             orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
-            cameraPos.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
+        cameraPos.rotation = orientation.rotation;
     }
 
     public void DoTilt(float endValue, float duration)
@@ -75,6 +76,6 @@ public class Mousemovement : MonoBehaviour
 
     public void CameraShakeWallLerp()
     {
-        transform.DOLocalRotate(new Vector3(CameraShakeAmountWallLerp, 0, 0), CameraShakeDurationWallLerp).OnComplete(() => transform.DOLocalRotate(new Vector3(0, 0, 0), CameraShakeDurationWallLerp));
+        transform.DOLocalRotate(new Vector3(CameraShakeAmountWallLerp, 0, 0), wallClimb.WallLerpDuration).OnComplete(() => transform.DOLocalRotate(new Vector3(0, 0, 0), wallClimb.WallLerpDuration));
     }
 }
