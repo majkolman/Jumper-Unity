@@ -8,6 +8,7 @@ public class Mousemovement : MonoBehaviour
     public float sensitivity = 2f;
 
     public Transform orientation;
+    public Transform cameraPos;
     public Transform camHolder;
     public float WallRunTransitionSpeed = 0.5f;
     public float StartFov = 90f;
@@ -17,6 +18,8 @@ public class Mousemovement : MonoBehaviour
     public float CameraShakeDuration = 0.1f;
     public float SlideFov = 110f;
     public float SlideTransitionSpeed = 1f;
+    public float CameraShakeAmountWallLerp = 20f;
+    public float CameraShakeDurationWallLerp = 0.5f;
     public ChangeCam cameraScript;
 
     float xRotation = 0f;
@@ -27,6 +30,7 @@ public class Mousemovement : MonoBehaviour
         orientation = GameObject.Find("Orientation").transform;
         camHolder = GameObject.Find("CameraHolder").transform;
         cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
+        cameraPos = GameObject.Find("CameraPos").transform;
     }
 
     void Start()
@@ -50,6 +54,7 @@ public class Mousemovement : MonoBehaviour
 
             camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
             orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            cameraPos.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
     }
 
@@ -66,5 +71,10 @@ public class Mousemovement : MonoBehaviour
     public void CameraShake()
     {
         transform.DOLocalRotate(new Vector3(CameraShakeAmount, 0, 0), CameraShakeDuration).OnComplete(() => transform.DOLocalRotate(new Vector3(0, 0, 0), CameraShakeDuration));
+    }
+
+    public void CameraShakeWallLerp()
+    {
+        transform.DOLocalRotate(new Vector3(CameraShakeAmountWallLerp, 0, 0), CameraShakeDurationWallLerp).OnComplete(() => transform.DOLocalRotate(new Vector3(0, 0, 0), CameraShakeDurationWallLerp));
     }
 }
