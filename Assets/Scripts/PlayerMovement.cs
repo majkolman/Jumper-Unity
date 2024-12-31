@@ -61,6 +61,7 @@ public class Playermovement : MonoBehaviour
     private bool isWallRunningPrevious;
     public float maxWallRunSpeed = 9999999f;
     public float minWallRunSpeed = 10f;
+    public float exitWallSpeedTimer;
 
     public Transform orientation;
  
@@ -93,6 +94,7 @@ public class Playermovement : MonoBehaviour
     void Update(){
         //check for wall and limit speed
         isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundMask);
+        if(exitWallSpeedTimer > 0) exitWallSpeedTimer -= Time.deltaTime;
         
 
         StateHandler();
@@ -210,6 +212,10 @@ public class Playermovement : MonoBehaviour
                 Vector3 limitedVel = horizontalVel.normalized * wallRunStartSpeed;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
         }
+        if(exitWallSpeedTimer > 0){
+            return;
+        }
+
         else if(isSliding || !isGrounded)
         {
                 float reductionFactor = (horizontalVel.magnitude - (slideFriction * Time.deltaTime)) / horizontalVel.magnitude;

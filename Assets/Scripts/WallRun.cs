@@ -31,6 +31,7 @@ public class WallRun : MonoBehaviour
 
     [Header("Exiting")]
     public float exitWallTime = .1f;
+    public float exitWallSpeedTime = .2f;
     private bool exitingWall;
     private float exitWallTimer;
 
@@ -183,6 +184,7 @@ public class WallRun : MonoBehaviour
         rb.AddForce(forceToApply, ForceMode.Impulse);
         exitingWall = true;
         exitWallTimer = exitWallTime;
+        playerMovement.exitWallSpeedTimer = exitWallSpeedTime;
     }
     
 
