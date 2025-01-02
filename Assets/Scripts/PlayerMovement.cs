@@ -14,6 +14,7 @@ public class Playermovement : MonoBehaviour
     private float groundDrag;
     public float groundDragStart = 2f;
     public float groundDragSlide = 0f;
+    public float currentSpeed;
 
     [Header("Jump")]
     public float jumpForce = 12f;
@@ -97,6 +98,7 @@ public class Playermovement : MonoBehaviour
         StateHandler();
         MyInput();
         if(!SlideCheck) LimitSpeed();
+        currentSpeed = (new Vector3(rb.velocity.x, 0f, rb.velocity.z)).magnitude;
 
         if(isSliding){
             groundDrag = groundDragSlide;
