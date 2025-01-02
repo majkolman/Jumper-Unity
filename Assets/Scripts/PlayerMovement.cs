@@ -49,7 +49,7 @@ public class Playermovement : MonoBehaviour
     [Header("Ground Check")]
     public float playerHeight = 2f;
     private LayerMask groundMask;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool isGroundedPrevious;
 
     [Header("Slope Handling")]
