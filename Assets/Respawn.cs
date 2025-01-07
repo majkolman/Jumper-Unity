@@ -39,7 +39,7 @@ public class Respawn : MonoBehaviour
         {
             // if player presses escape turn on pause screen
             Transform menuText = UI_canvas.transform.GetChild(0).Find("menuText");
-            menuText.GetComponent<TMP_Text>().text = "Game paused"
+            menuText.GetComponent<TMP_Text>().text = "Game paused";
             // turns on/off the pause scren
             TogglePanel();
         }
