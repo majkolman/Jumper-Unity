@@ -43,7 +43,7 @@ public class Mousemovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (cameraScript.CamMode == 0)
+        if (cameraScript.CamMode == 0 && Time.timeScale > 0)
         {
             float mouseX = Input.GetAxis("Mouse X") * sensitivity;
             float mouseY = Input.GetAxis("Mouse Y") * sensitivity;
