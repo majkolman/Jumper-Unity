@@ -84,7 +84,7 @@ public class WallRun : MonoBehaviour
 
     private bool AboveGround()
     {
-        return !Physics.Raycast(transform.position, Vector3.down, wallCheckHeight, groundLayer);
+        return !Physics.Raycast(transform.position, Vector3.down, out var kysUnity, wallCheckHeight, groundLayer);
     }
 
     private void StateCheck()
