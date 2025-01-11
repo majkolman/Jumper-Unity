@@ -50,7 +50,7 @@ public class WallClimb : MonoBehaviour
         if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && CameraHitWall && CameraHit.collider.CompareTag("Wall"))
         {
             isWallClimbing = true;
-        }else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall)
+        }else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall && Input.GetKey(KeyCode.Space))
         {
             isWallClimbing = false;
             playerCam.CameraShakeWallLerp();
@@ -60,7 +60,8 @@ public class WallClimb : MonoBehaviour
             isWallClimbing = false;
         }
 
-        if(isWallClimbing && verticalInput > 0){
+        if(isWallClimbing && verticalInput > 0 && Input.GetKey(KeyCode.Space))
+        {
             WallClimbUp();
         }else if(isWallClimbing){
             // Push away from wall
@@ -84,7 +85,7 @@ public class WallClimb : MonoBehaviour
 
     void Climb()
     {
-        if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight))
+        if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight) )
             {
                 StartCoroutine(LerpClimb(secondHit.point, WallLerpDuration));
                 isLerping = true;
