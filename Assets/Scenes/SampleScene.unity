@@ -8797,9 +8797,33 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: RespawnPlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 4318595410920946739, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1997046320}
+    - target: {fileID: 4318595410920946739, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ContinueFunction
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318595410920946739, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Respawn, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5754130898300519930, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
       propertyPath: m_Name
       value: UI-Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044103179175860756, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1997046320}
+    - target: {fileID: 8044103179175860756, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BackToMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044103179175860756, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Respawn, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8089260462312031543, guid: eede92013ed0a004c99d85f4980a2b23, type: 3}
       propertyPath: m_Pivot.x
