@@ -3,7 +3,17 @@ guid: 41ae1e0caa6b94403a30c847213f7053
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: deblo
+    second: {fileID: 2100000, guid: 869a23726dafa3141b11ea6326f92e58, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: zelena_listje test_bake
+    second: {fileID: 2100000, guid: c5c1b9550bd248c42a857f572b30aaaf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
