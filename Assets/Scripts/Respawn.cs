@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Respawn : MonoBehaviour
@@ -23,7 +24,7 @@ public class Respawn : MonoBehaviour
     {
         player_transform = gameObject.transform.parent.transform;
         
-        if (player_transform.position.y < 0)
+        if (player_transform.position.y < 14)
         {
             // the player is "dead" if y is lower than 0
             // stop the time and turn on the death screen
@@ -35,7 +36,7 @@ public class Respawn : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-        else if (Input.GetKeyUp(menuKey))
+        else if (Input.GetKeyDown(menuKey))
         {
             // if player presses escape turn on pause screen
             Transform menuText = UI_canvas.transform.GetChild(0).Find("menuText");
@@ -73,5 +74,11 @@ public class Respawn : MonoBehaviour
             Cursor.visible = false;
             Time.timeScale = 1;
         }
+    }
+
+    public void BackToMenu()
+    {
+        //SceneManager.LoadScene(SceneManager.GetSceneByName("MainMenuScene").buildIndex);
+        SceneManager.LoadScene(0);
     }
 }
