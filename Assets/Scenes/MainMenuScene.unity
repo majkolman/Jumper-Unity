@@ -454,7 +454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7356424928277490001, guid: 9c58eec64af55524aad70f23ec1fdbdb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayGame
+      value: PlayTutorial
       objectReference: {fileID: 0}
     - target: {fileID: 8474232912415767475, guid: 9c58eec64af55524aad70f23ec1fdbdb, type: 3}
       propertyPath: m_Colors.m_NormalColor.a
