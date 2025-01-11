@@ -94,7 +94,7 @@ public class Playermovement : MonoBehaviour
     
     void Update(){
         //check for wall and limit speed
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.2f, groundMask);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, out var kys, playerHeight * 0.5f + 0.2f, groundMask);
         StateHandler();
         MyInput();
         if(!SlideCheck) LimitSpeed();
