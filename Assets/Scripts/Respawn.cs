@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class Respawn : MonoBehaviour
 {
@@ -23,23 +25,27 @@ public class Respawn : MonoBehaviour
     {
         player_transform = gameObject.transform.parent.transform;
         
-        if (player_transform.position.y < 0)
+        if (player_transform.position.y < 14)
         {
             // the player is "dead" if y is lower than 0
             // stop the time and turn on the death screen
             Time.timeScale = 0;
-
+            
             UI_canvas.transform.GetChild(0).gameObject.SetActive(true);
             Transform menuText = UI_canvas.transform.GetChild(0).Find("menuText");
             menuText.GetComponent<TMP_Text>().text = "You died";
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            GameObject continueButton = UI_canvas.transform.GetChild(0).Find("ContinueButton").gameObject;
+            continueButton.SetActive(false);
         }
-        else if (Input.GetKeyUp(menuKey))
+        else if (Input.GetKeyDown(menuKey))
         {
             // if player presses escape turn on pause screen
             Transform menuText = UI_canvas.transform.GetChild(0).Find("menuText");
             menuText.GetComponent<TMP_Text>().text = "Game paused";
+            GameObject continueButton = UI_canvas.transform.GetChild(0).Find("ContinueButton").gameObject;
+            continueButton.SetActive(true);
             // turns on/off the pause scren
             TogglePanel();
         }
@@ -73,5 +79,17 @@ public class Respawn : MonoBehaviour
             Cursor.visible = false;
             Time.timeScale = 1;
         }
+    }
+
+    public void BackToMenu()
+    {
+        //SceneManager.LoadScene(SceneManager.GetSceneByName("MainMenuScene").buildIndex);
+        SceneManager.LoadScene(0);
+        Time.timeScale = 1;
+    }
+
+    public void ContinueFunction()
+    {
+        TogglePanel();
     }
 }
