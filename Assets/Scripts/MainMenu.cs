@@ -14,4 +14,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetSceneByName("TutorialScene").buildIndex);
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
