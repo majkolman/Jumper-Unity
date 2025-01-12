@@ -11,6 +11,8 @@ public class Respawn : MonoBehaviour
     public GameObject UI_canvas;
     private Transform player_transform;
     private KeyCode menuKey = KeyCode.Escape;
+    private float timer = 0;
+    private TMP_Text timerText;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +20,15 @@ public class Respawn : MonoBehaviour
         spawnPoint = gameObject.transform.position;
         UI_canvas = GameObject.FindGameObjectWithTag("UI-canvas");
         UI_canvas.transform.GetChild(0).gameObject.SetActive(false);
+        timerText = UI_canvas.transform.Find("Timer").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
         player_transform = gameObject.transform.parent.transform;
-        
+        timer = Time.timeSinceLevelLoad;
+        timerText.text = timer.ToString("#.00");
         if (player_transform.position.y < 14)
         {
             // the player is "dead" if y is lower than 0
