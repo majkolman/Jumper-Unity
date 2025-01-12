@@ -43,7 +43,7 @@ public class WallRun : MonoBehaviour
 
     void Awake()
     {
-        orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+        orientation = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.transform;
         groundLayer = LayerMask.GetMask("groundMask");
         wallRunLayer = LayerMask.GetMask("groundMask");
         playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();
@@ -89,13 +89,17 @@ public class WallRun : MonoBehaviour
 
     private void StateCheck()
     {
-       horizontalInput = Input.GetAxis("Horizontal");
-       verticalInput = Input.GetAxis("Vertical");
-
-        if ((isWallRight || isWallLeft) && verticalInput > 0 && AboveGround() && !exitingWall)
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
+        //Debug.Log("isWallRight: "+ isWallRight + " isWallLeft: " + isWallLeft + " verticalInput: " + verticalInput);
+        // zakomentiral sem AboveGround() ker wallrun ni hotu delat for some reason, vse kar zdej spremeni je
+        // da lahko po zidu zdej zacnes takoj tect tud ce si na tleh
+        if ((isWallRight || isWallLeft) && verticalInput > 0 && /*AboveGround() &&*/ !exitingWall)
         {
+            //Debug.Log("isWallRunning: " + isWallRunning);
             if(!isWallRunning)
             {
+                //Debug.Log("wall run started");
                 StartWallRun();
             }
 

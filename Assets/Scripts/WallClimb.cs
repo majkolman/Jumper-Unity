@@ -16,7 +16,7 @@ public class WallClimb : MonoBehaviour
     public float playerRadius = 1f;
     public float WallLerpDuration = 0.5f;
     private bool isWallClimbing = false;
-    private bool OrientationHitWall = false;
+    public bool OrientationHitWall = false;
     private bool CameraHitWall = false;
     private bool isLerping = false;
     private RaycastHit OrientationHit;
@@ -25,12 +25,13 @@ public class WallClimb : MonoBehaviour
     [Header("Input")]
     private float verticalInput;
     Rigidbody rb;
-    
 
-
+    public Animator animator;
+    public bool climbAnim;
 
     void Start()
     {
+        
         orientation = GameObject.Find("Orientation").transform;
         cameraPos = GameObject.Find("CameraPos").transform;
         rb = GetComponent<Rigidbody>();
@@ -40,27 +41,33 @@ public class WallClimb : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isLerping) return;
+        //if(isLerping) return;
+        if (climbAnim) return;
 
         OrientationHitWall = Physics.Raycast(orientation.position, orientation.forward, out OrientationHit, WallClimbMaxDistance);
         CameraHitWall = Physics.Raycast(cameraPos.position, cameraPos.forward, out CameraHit, WallClimbMaxDistance);
 
         verticalInput = Input.GetAxisRaw("Vertical");
+        Debug.Log("OrientationHitWall: " + OrientationHitWall + " CameraHitWall: " + CameraHitWall);
 
         if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && CameraHitWall && CameraHit.collider.CompareTag("Wall"))
         {
             isWallClimbing = true;
-        }else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall)
+            Debug.Log("Hit wall");
+        }
+        else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall /*&& Input.GetKey(KeyCode.Space)*/)
         {
             isWallClimbing = false;
             playerCam.CameraShakeWallLerp();
+            Debug.Log("Hit ledge");
             Climb();
             return;
         }else{
             isWallClimbing = false;
         }
 
-        if(isWallClimbing && verticalInput > 0){
+        if(isWallClimbing && verticalInput > 0 && Input.GetKey(KeyCode.Space))
+        {
             WallClimbUp();
         }else if(isWallClimbing){
             // Push away from wall
@@ -84,13 +91,20 @@ public class WallClimb : MonoBehaviour
 
     void Climb()
     {
-        if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight))
-            {
-                StartCoroutine(LerpClimb(secondHit.point, WallLerpDuration));
-                isLerping = true;
-            }
+        rb.isKinematic = true;
+        climbAnim = true;
+        animator.SetBool("canClimb", climbAnim);
+        Debug.Log(climbAnim);
+        /*if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight) )
+        {
+            StartCoroutine(LerpClimb(secondHit.point, WallLerpDuration));
+            isLerping = true;
+        }*/
     }
-    IEnumerator LerpClimb(Vector3 targetPosition, float duration)
+
+   
+
+    /*IEnumerator LerpClimb(Vector3 targetPosition, float duration)
     {
         float time = 0;
         Vector3 startPosition = transform.position;
@@ -103,6 +117,6 @@ public class WallClimb : MonoBehaviour
         }
         transform.position = targetPosition;
         isLerping = false;
-    }
+    }*/
     
 }

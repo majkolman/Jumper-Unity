@@ -74,9 +74,12 @@ public class Playermovement : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    [Header("Animation")]
+    public Transform animationParent;
+
     void Awake(){
         groundMask = LayerMask.GetMask("groundMask");
-        orientation = this.gameObject.transform.GetChild(0).gameObject.transform;
+        orientation = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.transform;
         cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
         playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();
     }
@@ -185,7 +188,8 @@ public class Playermovement : MonoBehaviour
             moveDirection = cameraForward * verticalInput + cameraRight * horizontalInput;
             if (moveDirection != Vector3.zero) {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                orientation.DORotateQuaternion(targetRotation, 0.5f); // Interpolate rotation over 0.5 seconds}
+                //orientation.DORotateQuaternion(targetRotation, 0.5f); // Interpolate rotation over 0.5 seconds}
+                animationParent.transform.DORotateQuaternion(targetRotation, 0.5f);
             }
         }
 
