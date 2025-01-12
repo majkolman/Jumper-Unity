@@ -220,6 +220,8 @@ public class Playermovement : MonoBehaviour
         {
                 float reductionFactor = (horizontalVel.magnitude - (slideFriction * Time.deltaTime)) / horizontalVel.magnitude;
                 Vector3 limitedVel = horizontalVel * reductionFactor;
+                if(double.IsNaN(limitedVel.z))limitedVel.x = 0.001f;
+                if(double.IsNaN(limitedVel.z))limitedVel.z = 0.001f;
                 rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
                 if (limitedVel.magnitude < slideEndSpeed) isSliding = false;
         }
