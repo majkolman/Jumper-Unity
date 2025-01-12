@@ -7,7 +7,7 @@ public class Mousemovement : MonoBehaviour
 {
     public float sensitivity = 2f;
 
-    public Transform animationParent;
+    public Transform rotationParent;
     public Transform orientation;
     public Transform cameraPos;
     public Transform camHolder;
@@ -33,7 +33,7 @@ public class Mousemovement : MonoBehaviour
         cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
         cameraPos = GameObject.Find("CameraPos").transform;
         wallClimb = GameObject.Find("Player").GetComponent<WallClimb>();
-        animationParent = GameObject.Find("AnimationParent").transform;
+        rotationParent = GameObject.Find("RotationParent").transform;
     }
 
     void Start()
@@ -56,10 +56,10 @@ public class Mousemovement : MonoBehaviour
             yRotation += mouseX;
 
             camHolder.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
-            animationParent.rotation = Quaternion.Euler(0f, yRotation, 0f);
+            rotationParent.rotation = Quaternion.Euler(0f, yRotation, 0f);
         }
-        orientation.rotation = animationParent.rotation;
-        cameraPos.rotation = animationParent.rotation;
+        orientation.rotation = rotationParent.rotation;
+        cameraPos.rotation = rotationParent.rotation;
     }
 
     public void DoTilt(float endValue, float duration)

@@ -27,7 +27,7 @@ public class Respawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player_transform = gameObject.transform.parent.parent.transform;
+        player_transform = gameObject.transform.parent.parent.parent.transform;
         if(!isPaused){
             timer = Time.timeSinceLevelLoad;
             timerText.text = timer.ToString("#.00");
