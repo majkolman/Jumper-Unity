@@ -26,6 +26,10 @@ public class WallClimb : MonoBehaviour
     private float verticalInput;
     Rigidbody rb;
 
+    [Header("Animation")]
+    public Transform rotationParent;
+    public Animator playerAnimator;
+
     public Animator animator;
     public bool climbAnim;
 
@@ -62,6 +66,8 @@ public class WallClimb : MonoBehaviour
         }else{
             isWallClimbing = false;
         }
+
+        playerAnimator.SetBool("isClimbing", isWallClimbing);
 
         if(isWallClimbing && verticalInput > 0 && Input.GetKey(KeyCode.Space))
         {

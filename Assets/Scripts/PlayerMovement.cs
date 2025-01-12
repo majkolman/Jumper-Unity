@@ -50,7 +50,7 @@ public class Playermovement : MonoBehaviour
     public float playerHeight = 2f;
     private LayerMask groundMask;
     public bool isGrounded;
-    private bool isGroundedPrevious;
+    public bool isGroundedPrevious;
 
     [Header("Slope Handling")]
     public float maxSlopeAngle = 70f;
@@ -122,6 +122,7 @@ public class Playermovement : MonoBehaviour
 
         //Camera Effects
         if(isGrounded && !isGroundedPrevious){
+            animator.SetTrigger("JumpEnd");
             playerCam.CameraShake();
         }
         if(isSliding && !isSlidingPrevious){
@@ -241,6 +242,7 @@ public class Playermovement : MonoBehaviour
     }
 
     void Jump(){
+        animator.SetTrigger("Jump");
         rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }

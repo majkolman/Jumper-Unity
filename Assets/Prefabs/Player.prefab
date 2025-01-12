@@ -96,6 +96,7 @@ MonoBehaviour:
   sprintKey: 304
   playerHeight: 2
   isGrounded: 0
+  isGroundedPrevious: 0
   maxSlopeAngle: 70
   isWallRunning: 0
   maxWallRunSpeed: 9999999
@@ -155,6 +156,8 @@ MonoBehaviour:
   playerRadius: 1
   WallLerpDuration: 0.5
   OrientationHitWall: 0
+  rotationParent: {fileID: 0}
+  playerAnimator: {fileID: 5022676212899885989}
   animator: {fileID: 8818244051513457369}
   climbAnim: 0
 --- !u!1 &687268756375981818
