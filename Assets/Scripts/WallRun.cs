@@ -43,7 +43,7 @@ public class WallRun : MonoBehaviour
 
     void Awake()
     {
-        orientation = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.transform;
+        orientation = GameObject.Find("Orientation").gameObject.transform;
         groundLayer = LayerMask.GetMask("groundMask");
         wallRunLayer = LayerMask.GetMask("groundMask");
         playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();

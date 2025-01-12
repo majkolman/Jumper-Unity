@@ -75,11 +75,11 @@ public class Playermovement : MonoBehaviour
     Rigidbody rb;
 
     [Header("Animation")]
-    public Transform animationParent;
+    public Transform rotationParent;
 
     void Awake(){
         groundMask = LayerMask.GetMask("groundMask");
-        orientation = this.gameObject.transform.GetChild(0).GetChild(0).gameObject.transform;
+        orientation = GameObject.Find("Orientation").gameObject.transform;
         cameraScript = GameObject.Find("CameraMonitor").GetComponent<ChangeCam>();
         playerCam = GameObject.Find("PlayerCam").GetComponent<Mousemovement>();
     }
@@ -189,7 +189,7 @@ public class Playermovement : MonoBehaviour
             if (moveDirection != Vector3.zero) {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 //orientation.DORotateQuaternion(targetRotation, 0.5f); // Interpolate rotation over 0.5 seconds}
-                animationParent.transform.DORotateQuaternion(targetRotation, 0.5f);
+                rotationParent.transform.DORotateQuaternion(targetRotation, 0.5f);
             }
         }
 

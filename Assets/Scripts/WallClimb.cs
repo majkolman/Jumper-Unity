@@ -48,18 +48,18 @@ public class WallClimb : MonoBehaviour
         CameraHitWall = Physics.Raycast(cameraPos.position, cameraPos.forward, out CameraHit, WallClimbMaxDistance);
 
         verticalInput = Input.GetAxisRaw("Vertical");
-        Debug.Log("OrientationHitWall: " + OrientationHitWall + " CameraHitWall: " + CameraHitWall);
+        //Debug.Log("OrientationHitWall: " + OrientationHitWall + " CameraHitWall: " + CameraHitWall);
 
         if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && CameraHitWall && CameraHit.collider.CompareTag("Wall"))
         {
             isWallClimbing = true;
-            Debug.Log("Hit wall");
+            //Debug.Log("Hit wall");
         }
         else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall /*&& Input.GetKey(KeyCode.Space)*/)
         {
             isWallClimbing = false;
             playerCam.CameraShakeWallLerp();
-            Debug.Log("Hit ledge");
+            //Debug.Log("Hit ledge");
             Climb();
             return;
         }else{
@@ -94,29 +94,6 @@ public class WallClimb : MonoBehaviour
         rb.isKinematic = true;
         climbAnim = true;
         animator.SetBool("canClimb", climbAnim);
-        Debug.Log(climbAnim);
-        /*if (Physics.Raycast(OrientationHit.point + (orientation.forward * playerRadius) + (Vector3.up * 0.6f * playerHeight), Vector3.down, out var secondHit, playerHeight) )
-        {
-            StartCoroutine(LerpClimb(secondHit.point, WallLerpDuration));
-            isLerping = true;
-        }*/
+        //Debug.Log(climbAnim);
     }
-
-   
-
-    /*IEnumerator LerpClimb(Vector3 targetPosition, float duration)
-    {
-        float time = 0;
-        Vector3 startPosition = transform.position;
-
-        while (time < duration)
-        {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
-        isLerping = false;
-    }*/
-    
 }

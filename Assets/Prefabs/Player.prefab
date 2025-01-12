@@ -29,12 +29,11 @@ Transform:
   m_GameObject: {fileID: 272295361760820700}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.85, y: 12.58, z: 9.58}
+  m_LocalPosition: {x: 49.58, y: 19.18, z: 12.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7582947167434946002}
-  - {fileID: 794091610612006550}
+  - {fileID: 7492775833174096158}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6295144433821355048
@@ -62,7 +61,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &7570855370044128916
 MonoBehaviour:
@@ -102,10 +101,10 @@ MonoBehaviour:
   maxWallRunSpeed: 9999999
   minWallRunSpeed: 10
   exitWallSpeedTimer: 0
-  orientation: {fileID: 0}
+  orientation: {fileID: 6595156572266197643}
   cameraScript: {fileID: 0}
   playerCam: {fileID: 0}
-  animationParent: {fileID: 7582947167434946002}
+  rotationParent: {fileID: 7492775833174096158}
 --- !u!114 &6989574475844843151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +131,7 @@ MonoBehaviour:
   wallCheckHeight: 2
   exitWallTime: 0.1
   exitWallSpeedTime: 0.2
-  orientation: {fileID: 0}
+  orientation: {fileID: 6595156572266197643}
   playerCam: {fileID: 0}
 --- !u!114 &8216843874439439667
 MonoBehaviour:
@@ -146,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f74ef6806c92b9548ac004f921bf78eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  orientation: {fileID: 0}
+  orientation: {fileID: 6595156572266197643}
   cameraPos: {fileID: 0}
   playerCam: {fileID: 0}
   WallClimbUpForce: 1000
@@ -214,7 +213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520546757810039073}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -225,8 +224,8 @@ Transform:
   - {fileID: 4498038814837728789}
   - {fileID: 2737576561111497476}
   - {fileID: 680090033213002809}
-  m_Father: {fileID: 8020257499749480614}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Father: {fileID: 7492775833174096158}
+  m_LocalEulerAnglesHint: {x: 6.56804, y: 0, z: 0}
 --- !u!95 &8818244051513457369
 Animator:
   serializedVersion: 5
@@ -425,11 +424,11 @@ Transform:
   m_GameObject: {fileID: 2625188746318942951}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.9836, z: 1.1042}
+  m_LocalPosition: {x: 0, y: 1.9836006, z: 1.1042004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8020257499749480614}
+  m_Father: {fileID: 7492775833174096158}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3460011510242061745
 GameObject:
@@ -545,6 +544,39 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3972801742305860594
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7492775833174096158}
+  m_Layer: 0
+  m_Name: RotationParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7492775833174096158
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3972801742305860594}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7582947167434946002}
+  - {fileID: 794091610612006550}
+  m_Father: {fileID: 8020257499749480614}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6132328843637000096
 GameObject:
   m_ObjectHideFlags: 0
