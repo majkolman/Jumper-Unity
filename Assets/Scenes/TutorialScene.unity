@@ -3924,7 +3924,7 @@ PrefabInstance:
     - target: {fileID: 1222311564568650579, guid: dac09d6358f1e57479e6e36b0588c721, type: 3}
       propertyPath: respawnScript
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 512596169}
     - target: {fileID: 1637765496822112265, guid: dac09d6358f1e57479e6e36b0588c721, type: 3}
       propertyPath: m_LocalPosition.x
       value: 37.079567
