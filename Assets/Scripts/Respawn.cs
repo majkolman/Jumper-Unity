@@ -21,7 +21,7 @@ public class Respawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        player_transform = gameObject.transform.parent.transform;
+        player_transform = gameObject.transform.parent.transform.parent.transform;
         
         if (player_transform.position.y < 0)
         {
