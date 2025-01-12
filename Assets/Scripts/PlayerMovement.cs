@@ -76,6 +76,7 @@ public class Playermovement : MonoBehaviour
 
     [Header("Animation")]
     public Transform animationParent;
+    public Animator animator;
 
     void Awake(){
         groundMask = LayerMask.GetMask("groundMask");
@@ -102,6 +103,8 @@ public class Playermovement : MonoBehaviour
         MyInput();
         if(!SlideCheck) LimitSpeed();
         currentSpeed = (new Vector3(rb.velocity.x, 0f, rb.velocity.z)).magnitude;
+        float forwardSpeed = Vector3.Dot(rb.velocity, orientation.forward);
+        animator.SetFloat("forward", forwardSpeed);
 
         if(isSliding){
             groundDrag = groundDragSlide;
