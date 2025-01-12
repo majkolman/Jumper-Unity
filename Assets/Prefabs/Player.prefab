@@ -105,6 +105,7 @@ MonoBehaviour:
   orientation: {fileID: 0}
   cameraScript: {fileID: 0}
   playerCam: {fileID: 0}
+  animationParent: {fileID: 7582947167434946002}
 --- !u!114 &6989574475844843151
 MonoBehaviour:
   m_ObjectHideFlags: 0
