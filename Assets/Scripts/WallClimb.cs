@@ -48,18 +48,15 @@ public class WallClimb : MonoBehaviour
         CameraHitWall = Physics.Raycast(cameraPos.position, cameraPos.forward, out CameraHit, WallClimbMaxDistance);
 
         verticalInput = Input.GetAxisRaw("Vertical");
-        Debug.Log("OrientationHitWall: " + OrientationHitWall + " CameraHitWall: " + CameraHitWall);
 
         if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && CameraHitWall && CameraHit.collider.CompareTag("Wall"))
         {
             isWallClimbing = true;
-            Debug.Log("Hit wall");
         }
         else if(OrientationHitWall && OrientationHit.collider.CompareTag("Wall") && !CameraHitWall /*&& Input.GetKey(KeyCode.Space)*/)
         {
             isWallClimbing = false;
             playerCam.CameraShakeWallLerp();
-            Debug.Log("Hit ledge");
             Climb();
             return;
         }else{

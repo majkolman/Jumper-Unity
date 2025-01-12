@@ -13,6 +13,7 @@ public class Respawn : MonoBehaviour
     private KeyCode menuKey = KeyCode.Escape;
     private float timer = 0;
     private TMP_Text timerText;
+    private bool isPaused = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +28,10 @@ public class Respawn : MonoBehaviour
     void Update()
     {
         player_transform = gameObject.transform.parent.parent.transform;
-        timer = Time.timeSinceLevelLoad;
-        timerText.text = timer.ToString("#.00");
+        if(!isPaused){
+            timer = Time.timeSinceLevelLoad;
+            timerText.text = timer.ToString("#.00");
+        }
         if (player_transform.position.y < 14)
         {
             // the player is "dead" if y is lower than 0
@@ -95,5 +98,10 @@ public class Respawn : MonoBehaviour
     public void ContinueFunction()
     {
         TogglePanel();
+    }
+
+    public void TimerStop()
+    {
+        isPaused = true;
     }
 }
