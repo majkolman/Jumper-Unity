@@ -6560,6 +6560,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 684766471693284177, guid: 603d65c9c949d874485d340787d4b7ec, type: 3}
+      propertyPath: playerAnimator
+      value: 
+      objectReference: {fileID: 2015107516}
     - target: {fileID: 698398613865959434, guid: 603d65c9c949d874485d340787d4b7ec, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 
@@ -15342,6 +15346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af44a11c0db475469ebf159f127d441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2015107516 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5022676212899885989, guid: 603d65c9c949d874485d340787d4b7ec, type: 3}
+  m_PrefabInstance: {fileID: 944266936}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2020588173
 PrefabInstance:
   m_ObjectHideFlags: 0
